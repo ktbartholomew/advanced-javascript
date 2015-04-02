@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/solarized-dark.css" id="theme">
+    <link rel="stylesheet" href="css/js-lunch-and-learn.css">
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -45,6 +46,11 @@
           <p>
             <small>Created by <a href="http://twitter.com/ktbartholomew">@ktbartholomew</a></small>
           </p>
+          <aside class="notes" data-markdown>
+* Lists
+* of 
+* notes
+          </aside>
         </section>
 
         <section>
@@ -72,7 +78,7 @@ for(var i = 0; i < list.length; i++) {
             <div class="fragment">
                 <h3>Functional</h3>
                 <pre><code class="javascript">
-list.forEach(function (element, index, array) {
+_.forEach(list, function (element, index, array) {
   console.log('Item %s is: %s', index, element);
 });
                 </code></pre>
@@ -100,14 +106,16 @@ for(var i = 0; i < list.length; i++) {
         </section>
         <section>
             <section>
+                <img src="img/lamb-duh.jpg" alt="Lamb duh." style="width: 60%;">
                 <h2>Functional Programming concepts</h2>
             </section>
             <section>
                 <h3>Use higher-order functions (functions with functions as arguments)</h3>
+                <p>Also called lambda functions (&lambda;)</p>
                 <pre><code class="javascript">
 var parts = [1,2,3];
 
-parts.forEach(function(element, index, array) {
+_.forEach(parts, function(element, index, array) {
    // iterate over each element in the list 
 });
                 </code></pre>
@@ -118,7 +126,7 @@ parts.forEach(function(element, index, array) {
 var numbers = [1,0,2,0,3];
 
 var removeZeroes = function (list) {
-    list.forEach(function (element, index, array) {
+    _.forEach(list, function (element, index, array) {
         if(element === 0) {
             array.splice(index,1);
         }
@@ -152,15 +160,21 @@ sum = calculateSum(parts); // returns 6
         </section>
         <section>
             <section>
+                <img src="img/brady-bunch.jpg" alt="Brady Bunch" style="width: 60%;">
                 <h2>Functional Programming Tools: lodash</h2>
             </section>
             <section>
                 <h3><code>_.forEach</code></h3>
                 <pre><code class="javascript">
-var list = {a: 1, b: 2, c: 3};
+var kids = [
+    {name: 'Greg', gender: 'male', age: 18},
+    {name: 'Marcia', gender: 'female', age: 17},
+    {name: 'Peter', gender: 'male', age: 15},
+    {name: 'Jan', gender: 'female', age: 14}
+];
 
-_.forEach(list, function (element, index, array) {
-    console.log(element);
+_.forEach(kids, function (element, index, array) {
+    array[index].age += 1;
 });
                 </code></pre>
             </section>
@@ -168,10 +182,10 @@ _.forEach(list, function (element, index, array) {
                 <h3><code>_.find</code></h3>
                 <pre><code class="javascript">
 var kids = [
-    {name: 'Greg', gender: 'male'},
-    {name: 'Marcia', gender: 'female'},
-    {name: 'Peter', gender: 'male'},
-    {name: 'Jan', gender: 'female'}
+    {name: 'Greg', gender: 'male', age: 18},
+    {name: 'Marcia', gender: 'female', age: 17},
+    {name: 'Peter', gender: 'male', age: 15},
+    {name: 'Jan', gender: 'female', age: 14}
 ];
 
 var marcia = _.find(kids, function (element, index, array) {
@@ -185,10 +199,10 @@ var marcia = _.find(kids, function (element, index, array) {
                 <h3><code>_.filter</code></h3>
                 <pre><code class="javascript">
 var kids = [
-    {name: 'Greg', gender: 'male'},
-    {name: 'Marcia', gender: 'female'},
-    {name: 'Peter', gender: 'male'},
-    {name: 'Jan', gender: 'female'}
+    {name: 'Greg', gender: 'male', age: 18},
+    {name: 'Marcia', gender: 'female', age: 17},
+    {name: 'Peter', gender: 'male', age: 15},
+    {name: 'Jan', gender: 'female', age: 14}
 ];
 
 var boys = _.filter(kids, function (element, index, array) {
@@ -202,10 +216,10 @@ var boys = _.filter(kids, function (element, index, array) {
                 <h3><code>_.map</code></h3>
                 <pre><code class="javascript">
 var kids = [
-    {name: 'Greg', gender: 'male'},
-    {name: 'Marcia', gender: 'female'},
-    {name: 'Peter', gender: 'male'},
-    {name: 'Jan', gender: 'female'}
+    {name: 'Greg', gender: 'male', age: 18},
+    {name: 'Marcia', gender: 'female', age: 17},
+    {name: 'Peter', gender: 'male', age: 15},
+    {name: 'Jan', gender: 'female', age: 14}
 ];
 
 var names = _.map(kids, function (element, index, array) {
@@ -233,9 +247,99 @@ var youngest = _.reduce(kids, function (result, n, key) {
 
                 </code></pre>
             </section>
+            <section>
+                <div class="word-cloud">
+                    <code>_.reduce()</code>
+                    <code>_.chunk()</code>
+                    <code>_.sortBy()</code>
+                    <code>_.findWhere()</code>
+                    <code>_.filter()</code>
+                    <code>_.throttle()</code>
+                    <code>_.delay()</code>
+                    <code>_.isArray()</code>
+                    <code>_.isUndefined()</code>
+                    <code>_.max()</code>
+                    <code>_.min()</code>
+                    <code>_.sum()</code>
+                    <code>_.random()</code>
+                    <code>_.camelCase()</code>
+                    <code>_.kebabCase()</code>
+                    <code>_.words()</code>
+                    <code>_.attempt()</code>
+                </div>
+            </section>
+        </section>
+        <section>
+            <section>
+                <img src="img/yoda.jpg" alt="Yoda says there is no class">
+                <h2>There is no <code>class</code>.</h2>
+            </section>
+            <section>
+                <h2>Prototypal Inheritance</h2>
+                <p>JavaScript uses prototypes (as opposed to classes) to create and extend objects</p>
+            </section>
+            <section>
+                <h2>No, really</h2>
+                <p>Even if you think you’re using classes, you’re actually using prototypes.</p>
+            </section>
+            <section>
+                <h2>New objects can extend any existing object</h2>
+                <p>So, everything is a “class”.</p>
+            </section>
+            <section>
+                <!-- <h2>Anything can be a prototype</h2> -->
+                <pre><code class="javascript">
+var Rectangle = {
+    width: 0,
+    height: 0
+};
+
+var myRect = Object.create(Rectangle);
+
+var List = [];
+
+var myList = Object.create(List);
+myList.push('foo');
+
+var Func = function () {
+    this.foo = 'foo';
+}
+
+var myFunc = Object.create();
+Func.call(myFunc);
+                </code></pre>
+            </section>
+            <section>
+                <h2>Prototypes can change <br>on-the-fly</h2>
+            </section>
+            <section>
+                <pre><code class="javascript">
+var Rectangle = {
+    width: 4, 
+    height: 3
+};
+
+var myRect = Object.create(Rectangle);
+
+myRect.height = 4;
+// myRect: {width: 4 (inherited), height: 4}
+
+Rectangle.width = 6;
+// myRect: {width: 6 (inherited), height: 4}
+                </code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Dealing with HTML</h2>
+                <p><code>'&lt;p&gt;' + stopDoingThis + '&lt;/p&gt;'</code></p>    
+            </section>
+            <section>
+                <h2>Concatenated HTML</h2>
+                <p>Mixing JavaScript and HTML breaks down separation of concerns (logic/presentation).</p>
+            </section>
         </section>
       </div>
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
@@ -260,8 +364,12 @@ var youngest = _.reduce(kids, function (result, n, key) {
           { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
           { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
           { src: 'plugin/zoom-js/zoom.js', async: true },
-          { src: 'plugin/notes/notes.js', async: true }
+          { src: 'plugin/notes/notes.js', async: true },
         ]
+      });
+
+      Reveal.addEventListener('slidechanged', function (event) {
+        console.log(event);
       });
 
     </script>
