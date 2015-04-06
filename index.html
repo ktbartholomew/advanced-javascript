@@ -272,7 +272,7 @@ var youngest = _.reduce(kids, function (result, n, key) {
         <section>
             <section>
                 <img src="img/yoda.jpg" alt="Yoda says there is no class">
-                <h2>There is no <code>class</code>.</h2>
+                <h2>There is no class.</h2>
             </section>
             <section>
                 <h2>Prototypal Inheritance</h2>
@@ -287,7 +287,7 @@ var youngest = _.reduce(kids, function (result, n, key) {
                 <p>So, everything is a “class”.</p>
             </section>
             <section>
-                <!-- <h2>Anything can be a prototype</h2> -->
+                <h2>Anything can be a prototype</h2>
                 <pre><code class="javascript">
 var Rectangle = {
     width: 0,
@@ -295,12 +295,20 @@ var Rectangle = {
 };
 
 var myRect = Object.create(Rectangle);
-
+</code></pre>
+            </section>
+            <section>
+                <h2>Anything can be a prototype</h2>
+                <pre><code class="javascript">
 var List = [];
 
 var myList = Object.create(List);
 myList.push('foo');
-
+                </code></pre>
+            </section>
+            <section>
+                <h2>Anything can be a prototype</h2>
+                <pre><code class="javascript">
 var Func = function () {
     this.foo = 'foo';
 }
@@ -336,8 +344,235 @@ Rectangle.width = 6;
             </section>
             <section>
                 <h2>Concatenated HTML</h2>
-                <p>Mixing JavaScript and HTML breaks down separation of concerns (logic/presentation).</p>
+                <ul>
+                    <li>Mixing JavaScript and HTML breaks down separation of concerns (logic/presentation)</li>
+                    <li>It also makes it difficult for JavaScript to do effective garbage collection</li>
+                </ul>
             </section>
+            <section data-background-iframe="http://garann.github.io/template-chooser/"></section>
+            <section>
+                <h2>JS Templating Engines</h2>
+                <ul>
+                    <li><strong>Lodash Templates:</strong> Quick n' Dirty</li>
+                    <li><strong>Handlebars:</strong> Unique syntax</li>
+                    <li><strong>Nunjucks:</strong> Like Twig in your browser</li>
+                </ul>
+            </section>
+            <section>
+              <h2>JS Templating process</h2>
+              <ol>
+                <li><span style="text-decoration: underline;">Compile</span>. Take text with template tags and turn it into a function. Input is a string, Output is a function.</li>
+                <li class="fragment"><span style="text-decoration: underline;">Render</span>. Call the compiled template function, with template data as a function argument. Input is an object, Output is a string.</li>
+              </ol>
+            </section>
+            <section>
+                <h2>Lodash Templates</h2>
+                <pre><code class="erb">
+&lt;script type="text/template" id="news-article-partial"&gt; 
+  &lt;% var extraClasses = article.classes.join(' '); %&gt;
+  &lt;article class="news-article &lt;%= extraClasses %&gt;"&gt;
+      &lt;header&gt;
+          &lt;h2 class="news-article-title"&gt;
+              &lt;%= article.title %&gt;
+          &lt;/h2&gt;
+      &lt;/header&gt;
+      &lt;div class="news-article-body"&gt;
+          &lt;%= article.body %&gt;
+      &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/script&gt;
+                </code></pre>
+                <aside class="notes">
+This is a simple template that you might add directly to the HTML of your page. We've given it an id attribute so it's easy to find later. The plain parenthesis tags can do anything Javascript can do, and the parenthesis with equals signs outputs a variable.
+                </aside>
+            </section>
+            <section>
+                <h2>Lodash Templates</h2>
+                <pre><code class="erb">
+&lt;script type="text/template" id="news-article-partial"&gt; 
+  <% for(var i = 0; i < articles.length; i++) { %>
+  <% var article = articles[i]; %>
+
+  <article class="news-article">
+    <% if ( article.featured ) { %>
+      <span class="text-emphasis">Featured Article</span>
+    <% } else { %>
+      <span>Regular Article</span>
+    <% } %>
+  </article>
+  <% } %>
+&lt;/script&gt;
+                </code></pre>
+                <aside class="notes">
+Because these templates are just JavaScript and use JavaScript syntax, they can get difficult to read very quickly. A for loop and a simple if/else quickly add dangling curly braces that make the template very difficult to read.
+                </aside>
+            </section>
+            <section>
+              <h2>Lodash Templates</h2>
+              <pre><code class="javascript">
+// 1. Find the HTML tag with our template contents
+var articleTemplate = document.getElementById('news-article-partial');
+
+// 2. Compile the template text into a function
+var templateFunction = _.template(articleTemplate.innerHTML);
+
+// 3. Render the template, passing it an object with our data.
+var templateOuput = templateFunction({article: article});
+
+// 4. Add the rendered output to the page
+document.body.appendChild(templateOutput);
+              </code></pre>
+            </section>
+            <section>
+              <h2>Nunjucks Templates</h2>
+              <pre><code class="twig">
+&lt;script type="text/template" id="news-article-partial"&gt; 
+  {% set extraClasses = article.classes|join(' ') %}
+  <article class="news-article {{ extraClasses }}">
+    <header>
+      <h2 class="news-article-title">
+        {{ article.title }}
+      </h2>
+    </header>
+    <div class="news-article-body">
+      {{ article.body }}
+    </div>
+  </article>
+&lt;/script&gt;
+              </code></pre>
+            </section>
+            <section>
+              <h2>Nunjucks Templates</h2>
+              <pre><code class="twig">
+&lt;script type="text/template" id="news-article-partial"&gt; 
+  {% for article in articles %}
+  <article class="news-article">
+    {% if article.featured %}
+      <span class="text-emphasis">Featured Article</span>
+    {% else %}
+      <span>Regular Article</span>
+    {% endif %}
+  </article>
+  {% endfor %}
+&lt;/script&gt;
+              </code></pre>
+            </section>
+            <section>
+              <h2>Nunjucks Templates</h2>
+              <pre><code class="javascript">
+// 1. Find the HTML tag with our template contents
+var templateString = document.getElementById('news-article-partial');
+
+// 2. Compile the template text into a function
+var template = nunjucks.compile(articleTemplate.innerHTML);
+
+// 3. Render the template, passing it an object with our data.
+var templateOuput = template.render({article: article})
+
+// 4. Add the rendered output to the page
+document.body.appendChild(templateOutput);
+              </code></pre>
+            </section>
+            <section>
+              <h2>Templating Best Practice</h2>
+              <p>Compiling is expensive: pre-compile templates for use in production.</p>
+              <aside class="notes">
+Several templating engines provide a way to precompile your templates at build-time, using a Grunt task or something similar. This has an immediate performance benefit, because compiling the templates at runtime can be computationally expensive. In the case of Nunjucks, it also allows you to serve a much smaller library in production that only handles rendering templates. The "slim" version of Nunjucks is almost 70% smaller than the full library!
+              </aside>
+            </section>
+        </section>
+        <section>
+          <section>
+            <h2>Speed</h2>
+          </section>
+          <section>
+            <h2>Leave the DOM Alone</h2>
+            <ul>
+              <li>Don't modify the DOM in loops</li>
+              <li class="fragment">Don't modify the DOM in the middle of logic</li>
+              <li class="fragment">DO use requestAnimationFrame to defer DOM changes</li>
+              <li class="fragment">DO learn to love <code>DocumentFragment</code></li>
+            </ul>
+          </section>
+          <section>
+            <h2>Optimize jQuery Selectors</h2>
+            <ul>
+              <li>Don't end selectors with <code>*</code></li>
+              <li class="fragment">Don't be more specific than necessary</li>
+              <li class="fragment">DO cache selectors</li>
+              <li class="fragment">DO use <code>$('#some-id').find('.with-class')</code></li>
+              <li class="fragment">DO limit nested selectors</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Variables</h2>
+            <ul>
+              <li>Don't depend on global variables, or even variables in parent scopes</li>
+              <li class="fragment">Don't over-nest objects and arrays</li>
+              <li class="fragment">Don't change variable types on-the-fly</li>
+              <li class="fragment">Don't mix types in arrays</li>
+            </ul>
+          </section>
+          <section>
+            <h2>LocalStorage vs. Cookies</h2>
+            <ul>
+              <li>Cookies are sent to the server with every single request, whether they get used or not.</li>
+              <li>LocalStorage consumes ZERO network traffic, but can only be accessed by JavaScript.</li>
+            </ul>
+          </section>
+          <section data-background-iframe="http://youmightnotneedjquery.com/">
+            <h3 style="background: rgba(0,0,0,0.8); color: white; padding: 0.2em;">http://youmightnotneedjquery.com/</h3>
+          </section>
+          <section>
+            <h2>You Might Not Need jQuery</h2>
+            <pre><code class="javascript">
+// Instead of $('#section-1').find('img')
+var section = document.querySelector('#section-1');
+var images = section.querySelectorAll('img');
+            </code></pre>
+          </section>
+          <section>
+            <h2>You Might Not Need jQuery</h2>
+            <pre><code class="javascript">
+var section = document.querySelector('#section-1');
+
+// Instead of $('#section-1').hasClass('active');            
+section.classList.contains('active');
+
+// Instead of $('#section-1').addClass('active');
+section.classList.add('active');
+
+// Instead of $('#section-1').removeClass('active');
+section.classList.remove('active');
+            </code></pre>
+          </section>
+          <section>
+            <h2>You Might Not Need jQuery</h2>
+            <pre><code class="javascript">
+// Instead of $('#section-1').attr('data-section-id');
+var section = document.querySelector('#section-1');
+var sectionId = section.getAttribute('data-section-id');
+            </code></pre>
+          </section>
+          <section>
+            <h2>You Might Not Need jQuery</h2>
+            <pre><code class="javascript">
+// Instead of $('#section-1').on('click', function (e) { ... })
+var section = document.querySelector('#section-1');
+section.addEventListener('click', function (e) { ... });
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <h2>Thank You</h2>
+          <div style="text-align: left;">
+            <a href="https://lodash.com/">Lodash</a> <br>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">Inheritance and the Prototype Chain</a> <br>
+          <a href="https://mozilla.github.io/nunjucks/">Nunjucks</a> <br>
+          <a href="https://learn.jquery.com/performance/optimize-selectors/">Optimize jQuery Selectors</a> <br>
+          <a href="http://youmightnotneedjquery.com/">You Might Not Need jQuery</a>  
+          </div>
+          
         </section>
       </div>
     </div>
@@ -345,6 +580,7 @@ Rectangle.width = 6;
     <script src="lib/js/head.min.js"></script>
     <script src="js/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script type="text/javascript" src="js/nunjucks.min.js"></script>
     <script>
 
       // Full list of configuration options available at:
