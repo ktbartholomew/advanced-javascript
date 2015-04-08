@@ -341,19 +341,20 @@ Rectangle.width = 6;
             </section>
             <section>
                 <h2>Stop using <code>new</code></h2>
+                <pre><code class="javascript">
+// This disguises SuperClass as a class
+var n = new SuperClass('foo');
+
+// This makes it clear that we're creating new things from a prototype
+var p = Object.create(SuperPrototype);
+SuperPrototype.call(p, 'foo');
+                </code></pre>
             </section>
         </section>
         <section>
             <section>
                 <h2>Dealing with HTML</h2>
                 <p><code>'&lt;p&gt;' + stopDoingThis + '&lt;/p&gt;'</code></p>    
-            </section>
-            <section>
-                <h2>Concatenated HTML</h2>
-                <ul>
-                    <li>Mixing JavaScript and HTML breaks down separation of concerns (logic/presentation)</li>
-                    <li>It also makes it difficult for JavaScript to do effective garbage collection</li>
-                </ul>
             </section>
             <section data-background-iframe="http://garann.github.io/template-chooser/"></section>
             <section>
