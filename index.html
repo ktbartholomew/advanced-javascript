@@ -6,9 +6,7 @@
 
     <title>Advanced JavaScript</title>
 
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
-
+    <meta name="description" content="Advanced topics in JavaScript including functional programming, prototypal inheritance and speed optimizations">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
@@ -57,47 +55,54 @@
           </ul>
         </section>
         <section>
-          <h2>Functional Programming</h2>
-          <p>Possible because JavaScript has “first-class” functions that can be treated as variables. They can also be anonymous!</p>
-        </section>
-        <section>
-            <div>
-                <h3>Procedural</h3>
-                <pre data-trim><code>
+            <section>
+                <h2>Functional Programming</h2>
+                <ul>
+                    <li class="fragment">Functions can be variables</li>
+                    <li class="fragment">Functions with other functions as variables</li>
+                    <li class="fragment">Functions without side effects</li>
+                    <li class="fragment">Recursive functions instead of loops</li>
+                </ul>
+            </section>
+            <section>
+                <div>
+                    <h3>Procedural</h3>
+                    <pre data-trim><code>
 for(var i = 0; i < list.length; i++) {
   console.log('Item %s is: %s', i, list[i]);
 }
-                </code></pre>
-                <br>    
-            </div>
-            <div class="fragment">
-                <h3>Functional</h3>
-                <pre><code class="javascript">
+                    </code></pre>
+                    <br>    
+                </div>
+                <div class="fragment">
+                    <h3>Functional</h3>
+                    <pre><code class="javascript">
 _.forEach(list, function (element, index, array) {
   console.log('Item %s is: %s', index, element);
 });
-                </code></pre>
-            </div>
-        </section>
-        <section>
-            <h2>What’s so bad about the procedural way?</h2>
-            <pre data-trim><code class="javascript">
+                    </code></pre>
+                </div>
+            </section>
+            <section>
+                <h2>What’s so bad about the procedural way?</h2>
+                <pre data-trim><code class="javascript">
 var list = ['a','b','c'];
 
 for(var i = 0; i < list.length; i++) {
     var thisItem = list[i];
     console.log('Item %s is: %s', i, thisItem);
 }
-            </code><code class="fragment javascript">// What is the value of i now?</code><code class="fragment javascript">console.log(i); // 3, although list[3] doesn't exist</code><code class="fragment javascript">// What about thisItem?</code><code class="fragment javascript">console.log(thisItem); // 'c'</code>
-</pre>
-        </section>
-        <section>
-            <h2>What's so bad about the procedural way?</h2>
-            <ul>
-                <li>Basic control structures have major side-effects</li>
-                <li>Utility/index variables share the same scope</li>
-                <li>Each operation modifies a shared data set</li>
-            </ul>
+                </code><code class="fragment javascript">// What is the value of i now?</code><code class="fragment javascript">console.log(i); // 3, although list[3] doesn't exist</code><code class="fragment javascript">// What about thisItem?</code><code class="fragment javascript">console.log(thisItem); // 'c'</code>
+    </pre>
+            </section>
+            <section>
+                <h2>What's so bad about the procedural way?</h2>
+                <ul>
+                    <li>Basic control structures have major side-effects</li>
+                    <li>Utility/index variables share the same scope</li>
+                    <li>Each operation modifies a shared data set</li>
+                </ul>
+            </section>
         </section>
         <section>
             <section>
@@ -263,6 +268,9 @@ var youngest = _.reduce(kids, function (result, n, key) {
                     <code>_.attempt()</code>
                 </div>
             </section>
+            <section>
+                <a href="http://lodash.com">http://lodash.com</a>
+            </section>
         </section>
         <section>
             <section>
@@ -304,12 +312,12 @@ myList.push('foo');
             <section>
                 <h2>Anything can be a prototype</h2>
                 <pre><code class="javascript">
-var Func = function () {
-    this.foo = 'foo';
+var Func = function (argument) {
+    this.foo = argument;
 }
 
-var myFunc = Object.create();
-Func.call(myFunc);
+var myFunc = Object.create(myFunc);
+Func.call(myFunc, 'bar');
                 </code></pre>
             </section>
             <section>
@@ -330,6 +338,9 @@ myRect.height = 4;
 Rectangle.width = 6;
 // myRect: {width: 6 (inherited), height: 4}
                 </code></pre>
+            </section>
+            <section>
+                <h2>Stop using <code>new</code></h2>
             </section>
         </section>
         <section>
